@@ -1,0 +1,46 @@
+import "tfplan/v2" as tfplan
+
+allSQLDatabaseResources = filter tfplan.resource_changes as _, resource_changes {
+	resource_changes.type is "google_sql_database_instance" and
+		resource_changes.mode is "managed" and
+		(resource_changes.change.actions contains "create" or
+			resource_changes.change.actions is ["update"])
+}
+
+print("CIS 6.2: Ensure that Cloud SQL database Instances are not open to the world")
+
+deny_undefined_ip_configuration = rule {
+	all allSQLDatabaseResources as _, resources {
+		all resources.change.after.settings as _, settings {
+			keys(settings) contains "ip_configuration"
+		}
+	}
+}
+
+deny_undefined_ip_configuration_authorized_networks = rule when deny_undefined_ip_configuration is true {
+	all allSQLDatabaseResources as _, resources {
+		all resources.change.after.settings as _, settings {
+			all settings.ip_configuration as _, ip_configuration {
+				keys(ip_configuration) contains "authorized_networks"
+			}
+		}
+	}
+}
+
+ip_configuration_authorized_networks = rule when deny_undefined_ip_configuration_authorized_networks is true {
+	all allSQLDatabaseResources as _, resources {
+		all resources.change.after.settings as _, settings {
+			all settings.ip_configuration as _, ip_configuration {
+				all ip_configuration.authorized_networks as _, authorized_networks {
+					authorized_networks.value is not "0.0.0.0" and
+						authorized_networks.value not contains "/0"
+				}
+			}
+		}
+	}
+}
+
+main = rule {
+	deny_undefined_ip_configuration_authorized_networks and
+	ip_configuration_authorized_networks
+}
