@@ -7,7 +7,7 @@ allSQLDatabaseResources = filter tfplan.resource_changes as _, resource_changes 
 			resource_changes.change.actions is ["update"])
 }
 
-print("CIS 6.1: Ensure that Cloud SQL database instance requires all incoming connections to use SSL")
+print("Ensure that Cloud SQL database instance requires all incoming connections to use SSL")
 
 deny_undefined_ip_configuration = rule {
 	all filter allSQLDatabaseResources as _, resources {

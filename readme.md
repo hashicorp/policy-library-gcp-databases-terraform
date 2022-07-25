@@ -1,0 +1,6 @@
+# GCP Databases Sentinel Policies for Terraform
+
+## Policies included
+
+- **cloud-sql-databases-instance-requires-all-incoming-connections-to-use-ssl** ([documentation](https://github.com/rclark/policy-library-gcp-databases-terraform-policies/blob/main/docs/policies/cloud-sql-databases-instance-requires-all-incoming-connections-to-use-ssl.md) | [policy code](https://github.com/rclark/policy-library-gcp-databases-terraform-policies/blob/main/policies/cloud-sql-databases-instance-requires-all-incoming-connections-to-use-ssl/cloud-sql-databases-instance-requires-all-incoming-connections-to-use-ssl.sentinel))
+- **cloud-sql-databases-instances-are-not-open-to-the-world** ([documentation](https://github.com/rclark/policy-library-gcp-databases-terraform-policies/blob/main/docs/policies/cloud-sql-databases-instances-are-not-open-to-the-world.md) | [policy code](https://github.com/rclark/policy-library-gcp-databases-terraform-policies/blob/main/policies/cloud-sql-databases-instances-are-not-open-to-the-world/cloud-sql-databases-instances-are-not-open-to-the-world.sentinel))

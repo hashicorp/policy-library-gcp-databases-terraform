@@ -7,7 +7,7 @@ allSQLDatabaseResources = filter tfplan.resource_changes as _, resource_changes 
 			resource_changes.change.actions is ["update"])
 }
 
-print("CIS 6.2: Ensure that Cloud SQL database Instances are not open to the world")
+print("Ensure that Cloud SQL database Instances are not open to the world")
 
 deny_undefined_ip_configuration = rule {
 	all allSQLDatabaseResources as _, resources {
