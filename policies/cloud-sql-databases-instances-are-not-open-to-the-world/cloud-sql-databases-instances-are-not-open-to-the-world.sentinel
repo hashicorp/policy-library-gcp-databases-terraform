@@ -7,8 +7,6 @@ allSQLDatabaseResources = filter tfplan.resource_changes as _, resource_changes 
 			resource_changes.change.actions is ["update"])
 }
 
-print("Ensure that Cloud SQL database Instances are not open to the world")
-
 deny_undefined_ip_configuration = rule {
 	all allSQLDatabaseResources as _, resources {
 		all resources.change.after.settings as _, settings {
@@ -40,6 +38,16 @@ ip_configuration_authorized_networks = rule when deny_undefined_ip_configuration
 	}
 }
 
+// -------------------------------------------------------------
+// Category:    Database
+// Provider:    hashicorp/google
+// Resource:    google_sql_database_instance
+// Check:       settings.ip_configuration.authorized_networks
+//              is not "0.0.0.0" or contains "/0"
+// -------------------------------------------------------------
+// Ensure that Cloud SQL database Instances are not open to the
+// world.
+// -------------------------------------------------------------
 main = rule {
 	deny_undefined_ip_configuration_authorized_networks and
 	ip_configuration_authorized_networks
