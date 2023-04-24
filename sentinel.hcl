@@ -1,3 +1,6 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
 policy "cloud-sql-databases-instance-requires-all-incoming-connections-to-use-ssl" {
   source = "./policies/cloud-sql-databases-instance-requires-all-incoming-connections-to-use-ssl/cloud-sql-databases-instance-requires-all-incoming-connections-to-use-ssl.sentinel"
 }
