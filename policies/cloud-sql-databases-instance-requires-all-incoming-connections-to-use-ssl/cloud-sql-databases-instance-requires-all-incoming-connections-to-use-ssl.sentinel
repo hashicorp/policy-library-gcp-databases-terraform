@@ -24,7 +24,12 @@ ip_configuration_require_ssl_is_true = rule when deny_undefined_ip_configuration
 	} as _, instances {
 		all instances.change.after.settings as _, setting {
 			all setting.ip_configuration as _, config {
-				config.require_ssl is true
+				(
+				# Check if require_ssl exists and is true
+				(config.require_ssl else null != null and config.require_ssl is true) or
+					# Check if ssl_mode exists and is not `ALLOW_UNENCRYPTED_AND_ENCRYPTED`
+					((config.ssl_mode else null != null) and
+						config.ssl_mode != "ALLOW_UNENCRYPTED_AND_ENCRYPTED"))
 			}
 		}
 	}
@@ -34,7 +39,7 @@ ip_configuration_require_ssl_is_true = rule when deny_undefined_ip_configuration
 // Category:    Database
 // Provider:    hashicorp/google
 // Resource:    google_sql_database_instance
-// Check:       settings.ip_configuration.require_ssl is true
+// Check:       settings.ip_configuration.require_ssl is true or settings.ip_configuration.ssl_mode is not "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
 // -------------------------------------------------------------
 // Ensure that Cloud SQL database instance requires all incoming
 // connections to use SSL.
