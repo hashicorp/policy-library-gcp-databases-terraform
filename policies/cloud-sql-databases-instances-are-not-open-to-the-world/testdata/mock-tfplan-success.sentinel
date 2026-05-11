@@ -1,3 +1,5 @@
+# Copyright IBM Corp. 2022, 2026
+
 resource_changes = {
 	"google_sql_database_instance.mysql56": {
 		"address": "google_sql_database_instance.mysql56",
